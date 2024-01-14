@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- SEARCH SECTION -->
+      <div class="search-section">
+        <input
+          type="text"
+          id="countryInput"
+          placeholder="Enter a country name"
+        />
+        <button id="searchButton">Search</button>
+        <p id="message"></p>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="main-content">
+        <div id="results" class="results-container"></div>
+      </div>
+
+      <!-- IMAGES -->
+      <div class="main-content">
+        <div id="flagContainer" class="image-container"></div>
+        <div id="coatOfArmsContainer" class="image-container"></div>
+      </div>
+
+      <script src="script.js"></script>
+    </div>
+  </body>
+</html>
