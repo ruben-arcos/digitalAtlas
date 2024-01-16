@@ -1,12 +1,16 @@
 document.getElementById("searchButton").addEventListener("click", () => {
   const countryName = document.getElementById("countryInput").value;
   fetchCountryData(countryName);
-  console.log(countryName);
+//   console.log(countryName);
 });
 
 async function fetchCountryData(countryName) {
   const messageElement = document.getElementById("message");
   const resultsElement = document.getElementById("results");
+  const flagElement = document.getElementById("flagContainer");
+  const armsElement = document.getElementById("coatOfArmsContainer");
+
+  messageElement.textContent = ''
 
   try {
     const response = await fetch(`/search?country=${countryName}`);
@@ -17,10 +21,14 @@ async function fetchCountryData(countryName) {
     } else {
       displayCountryList(data, resultsElement);
     }
+
   } catch (error) {
     console.log(error);
     messageElement.textContent =
       "No result found. Please check your spelling and try again. This tool is built to search for the names of countries in English only.";
+      resultsElement.style.display = 'none'
+      flagElement.style.display = 'none'
+      armsElement.style.display = 'none'
   }
 }
 
@@ -72,8 +80,8 @@ function displayCountryInfo(countryData, container) {
     }>LINK</a></p>
     `;
 
-  container.document.getElementById("flagContainer").innerHTML = flagUrl
-    ? `<p><strong>Flag: </strong></p><img src="${flagUrl}" alt="${flagAlt}">`
+  document.getElementById("flagContainer").innerHTML = flagUrl
+    ? `<p><strong>Flag:</strong></p><img src="${flagUrl}" alt="${flagAlt}">`
     : "";
 
   document.getElementById("coatOfArmsContainer").innerHTML = flagUrl
@@ -81,4 +89,25 @@ function displayCountryInfo(countryData, container) {
     : "";
 }
 
+function displayCountryList(countries, container) {
+  let listHtml = `<p>Multiple results returned. Please choose one of the countries below to view: </p><ul>`;
+  listHtml += countries
+    .map(
+      (country) =>
+        `<li class='country-item' data-country="${country.name.common}">${country.name.common}</li> `
+    )
+    .join("");
+  listHtml += `</ul>`;
 
+  container.innerHTML = listHtml;
+
+
+// Event listener to select name from a list
+// parent element with child element (ex. list) use document.querySelectorAll to gram all of them 
+  document.querySelectorAll('.countryItem').forEach(item => {
+    item.addEventListener('click', () => {
+        const selectedCountry = countries.find(country => country.name.common === item.dataset.country)
+        displayCountryInfo(selectedCountry, container)
+    })
+  })
+}
